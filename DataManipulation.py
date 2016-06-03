@@ -1,7 +1,7 @@
 import numpy as np
 import json
 
-from DataProcessing import DataProcessing
+from DataProcessing import DataFiltering, DataLearner
 
 import mne
 
@@ -98,7 +98,7 @@ def readEvents(events_path):
 
 def loadDataForMNE(pathToConfig, pathToData, sfreq):
 
-    dp = DataProcessing()
+    dp = DataFiltering()
 
     dp.DesignFilter(8, 30, sfreq, 7)
 

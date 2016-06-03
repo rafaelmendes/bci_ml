@@ -22,7 +22,7 @@ from sklearn.lda import LDA
 from mne.decoding import CSP # Import Common Spatial Patterns
 from sklearn.pipeline import Pipeline
     
-class DataProcessing:
+class DataFiltering:
     def __init__(self):
         pass
 
@@ -54,6 +54,37 @@ class DataProcessing:
 
         return energy
 
+class DataLearner:
+    def __init__(self):
+        pass
+
+    def DesignLDA(self):
+        self.svc = LDA()
+
+    def DesignCSP(self, n_comp):
+        self.csp = CSP(n_components=n_comp, reg=None, log=True, cov_est='epoch')
+
+    def AssembleLearner(self):
+        self.clf = Pipeline([('CSP', self.csp), ('SVC', self.svc)])
+
+    def Learn(self, train_epochs, train_labels):
+
+        self.clf.fit(train_epochs, train_labels)
+
+    def Evaluate(self, eval_epochs, eval_labels):
+
+        self.score = self.clf.score(eval_epochs, eval_labels)
+
+    def PrintResults(self):
+        # class_balance = np.mean(labels == labels[0])
+        # class_balance = max(class_balance, 1. - class_balance)
+        class_balance = 0.5
+        print("Classification accuracy: %f / Chance level: %f" % (self.score,
+                                                                  class_balance))
+
+
+
+
 def nanCleaner(data_in):
     """Removes NaN from data by interpolation
     Parameters
@@ -80,3 +111,5 @@ def nanCleaner(data_in):
 def MNEFilter(data_in, f_low, f_high, f_order):
     # Apply band-pass filter
     data_out = data_in.filter(f_low, f_high, picks = None, filter_length=f_order, method='iir')
+
+
