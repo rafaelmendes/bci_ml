@@ -100,9 +100,11 @@ def loadDataForMNE(pathToConfig, pathToData, sfreq):
 
     dp = DataFiltering()
 
-    dp.DesignFilter(8, 30, sfreq, 7)
+    dp.DesignFilter(5, 30, sfreq, 4)
 
     data = loadDataAsMatrix(pathToData).T
+    
+    data = dp.ApplyFilter(data)
     # data = nanCleaner(data)
 
     ch_names = loadChannelLabels(pathToConfig) 

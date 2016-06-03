@@ -113,3 +113,25 @@ def MNEFilter(data_in, f_low, f_high, f_order):
     data_out = data_in.filter(f_low, f_high, picks = None, filter_length=f_order, method='iir')
 
 
+def computeAvgFFT(epochs, ch, fs, epoch_idx):
+    
+    n_samples = epochs.shape[2]
+    
+    N = 512
+    
+    T = 1.0 / fs
+
+    n_epochs = epochs.shape[0]
+    
+    ft = np.zeros(N)
+    A = np.zeros(N/2)
+ 
+    for i in epoch_idx:
+        epoch = epochs[i,ch,:]      
+        ft = fft(epoch, N)
+        A += 2.0/N * np.abs(ft[0:N/2])
+    
+    A = A / n_epochs        
+    freq = np.linspace(0.0, 1.0/(2.0*T), N/2)
+    
+    return freq, A
