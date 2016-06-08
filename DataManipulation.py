@@ -32,7 +32,7 @@ def loadDataAsMatrix(path, cols=[]):
     # return np.fliplr(matrix.T).T
     return matrix
 
-def extractEpochs(data, events_id, tmin, tmax):
+def extractEpochs(data, e, smin, smax):
     """Extracts the epochs from data based on event information
     Parameters
     ----------
@@ -62,18 +62,27 @@ def extractEpochs(data, events_id, tmin, tmax):
     
     """
 
-    events_list = mne.find_events(data, stim_channel='stim_clean')
+    events_list = e[:,2]
 
-    picks = mne.pick_types(data.info, meg=False, eeg=True, stim=False, eog=False,
-                       exclude='bads')
-    
-    # Read epochs (train will be done only between 1 and 2s)
-    # Testing will be done with a running classifier
-    epochs = mne.Epochs(data, events_list, events_id, tmin, tmax, proj=True, picks=picks,
-                    baseline=None, preload=True, add_eeg_ref=False, verbose=False)
-    labels = epochs.events[:, -1]
-    
+    idx = np.where(events_list != 0)[0]
+    s = e[idx, 0]
+
+    sBegin = s + smin
+    sEnd = s + smax
+
+    n_epochs = len(sBegin)
+    n_channels = data.shape[0]
+    n_samples = smax - smin
+
+    epochs = np.zeros([n_epochs, n_channels, n_samples])
+
+    labels = events_list[idx]
+
+    for i in range(n_epochs):
+        epochs[i,:,:] = data[:,sBegin[i]:sEnd[i]]
+
     return epochs, labels
+
 
 def saveMatrixAsTxt(data_in, path, mode = 'a'):
 
@@ -103,6 +112,8 @@ def loadDataForMNE(pathToConfig, pathToData, sfreq):
     dp.DesignFilter(5, 30, sfreq, 4)
 
     data = loadDataAsMatrix(pathToData).T
+
+    print data.shape
     
     data = dp.ApplyFilter(data)
     # data = nanCleaner(data)
