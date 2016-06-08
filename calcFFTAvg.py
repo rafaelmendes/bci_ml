@@ -15,7 +15,7 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
-DATA_FOLDER_PATH = "/home/rafael/codes/repo/bci_training_platform/data/session/rafael3_long/"
+DATA_FOLDER_PATH = "/home/rafaelmd/codes/repo/bci_training_platform/data/session/rafael3_long/"
 
 DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.txt"
 DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.txt"
