@@ -54,6 +54,31 @@ class DataFiltering:
 
         return energy
 
+    def GenerateWindow(self, win_len, n_seg, w_type = 'black'):
+        ov = 0.5 # windows overlap
+
+        seg_len = int(win_len / math.floor((n_seg * ov) + 1))
+
+        print seg_len
+
+        if w_type == 'han':
+            win_seg = np.hanning(seg_len)
+
+        if w_type == 'ham':
+            win_seg = np.hamming(seg_len)
+
+        if w_type == 'black':
+            win_seg = np.blackman(seg_len)
+
+        self.window = np.zeros(win_len)
+
+        idx = np.array(range(seg_len))
+        for i in range(n_seg):
+            new_idx = idx + seg_len*ov*i
+            new_idx = new_idx.astype(int)
+            self.window[new_idx] = self.window[new_idx] +  win_seg
+
+
 class DataLearner:
     def __init__(self):
         pass
