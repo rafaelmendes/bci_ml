@@ -81,7 +81,8 @@ class DataLearner:
         class_balance = 0.5
         print("Classification accuracy: %f / Chance level: %f" % (self.score,
                                                                   class_balance))
-
+    def GetResults(self):
+        return self.score
 
 
 
