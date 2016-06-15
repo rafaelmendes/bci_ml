@@ -16,7 +16,7 @@ import numpy as np
 
 ### MAIN ###
 def apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH, 
-		SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, EVENT_IDS, T_MIN, T_MAX):
+		SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, EVENT_IDS, T_MIN, T_MAX):
 
 	SMIN = T_MIN * SAMPLING_FREQ
 	SMAX = T_MAX * SAMPLING_FREQ
@@ -40,7 +40,7 @@ def apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH,
 	dl = DataLearner()
 
 	dl.DesignLDA()
-	dl.DesignCSP(6)
+	dl.DesignCSP(CSP_N)
 	dl.AssembleLearner()
 	dl.Learn(epochs_cal, labels_cal)
 
