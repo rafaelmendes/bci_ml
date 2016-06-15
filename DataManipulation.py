@@ -1,9 +1,6 @@
 import numpy as np
-import json
 
 from DataProcessing import DataFiltering, DataLearner
-
-import mne
 
 def loadDataAsMatrix(path, cols=[]):
     """Loads text file content as numpy matrix
@@ -29,7 +26,6 @@ def loadDataAsMatrix(path, cols=[]):
     else:
         matrix = np.loadtxt(open(path,"rb"), skiprows=1, usecols=cols)
 
-    # return np.fliplr(matrix.T).T
     return matrix
 
 def extractEpochs(data, e, smin, smax):
@@ -104,41 +100,5 @@ def readEvents(events_path):
     t_events = t_events.astype(int) # convert to integer
 
     return t_events
-
-def loadDataForMNE(pathToConfig, pathToData, sfreq):
-
-    dp = DataFiltering()
-
-    dp.DesignFilter(5, 30, sfreq, 4)
-
-    data = loadDataAsMatrix(pathToData).T
-
-    print data.shape
-    
-    data = dp.ApplyFilter(data)
-    # data = nanCleaner(data)
-
-    ch_names = loadChannelLabels(pathToConfig) 
-    
-    ch_types = ['eeg', 'eeg', 'eeg', 'eeg', 'eeg', 'eeg', 'eeg', 'eog']
-    info = mne.create_info(ch_names=ch_names, sfreq=sfreq, ch_types=ch_types)
-    
-    print data.shape    
-    
-    mne_data = mne.io.RawArray(data, info)
-
-    return mne_data
-
-def addEventsToMNEData(data, pathToEvents):
-
-    events_list = readEvents(pathToEvents)
-    info_stim = mne.create_info(ch_names=['stim_clean'], sfreq=data.info['sfreq'], ch_types=['stim'])
-    info_stim['buffer_size_sec'] = data.info['buffer_size_sec']
-    data_dum = np.zeros([1, data._data.shape[1]])
-    raw_stim = mne.io.RawArray(data_dum, info=info_stim)
-    data.add_channels([raw_stim])
-    data.add_events(events_list, stim_channel = 'stim_clean')
-
-    return data
 
 
