@@ -22,7 +22,6 @@ import scipy.linalg as lg
 from scipy.fftpack import fft
 
 from pylab import plot, show, pi
-import mne
 
 # from mne import Epochs, pick_types, find_events
 
@@ -141,11 +140,6 @@ def nanCleaner(data_in):
         data_in[i, bad_idx] = np.interp(bad_idx.nonzero()[0], (~bad_idx).nonzero()[0], data_in[i, ~bad_idx])
     
     return data_in
-
-def MNEFilter(data_in, f_low, f_high, f_order):
-    # Apply band-pass filter
-    data_out = data_in.filter(f_low, f_high, picks = None, filter_length=f_order, method='iir')
-
 
 def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
