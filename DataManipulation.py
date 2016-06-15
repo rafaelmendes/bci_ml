@@ -74,8 +74,18 @@ def extractEpochs(data, e, smin, smax):
 
     labels = events_list[idx]
 
+    print labels.shape
+
     for i in range(n_epochs):
-        epochs[i,:,:] = data[:,sBegin[i]:sEnd[i]]
+        epoch = data[:,sBegin[i]:sEnd[i]]
+
+        # Check if epoch is complete
+        if epoch.shape[1] == n_samples:
+            epochs[i,:,:] = epoch
+        else:
+            print 'Incomplete epoch detected...'
+            labels = np.delete(labels, (i))
+            epochs = np.delete(epochs, (i), axis = 0)
 
     return epochs, labels
 
