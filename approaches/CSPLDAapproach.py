@@ -1,17 +1,18 @@
 """CSP + LDA approach.
 Implements the CSP + LDA approach using a data from the V BCI competition
 """
-from DataManipulation import *
-from DataProcessing import *
-
-import numpy as np
-
 import os, sys, inspect
 
 cmd_subfolder = os.path.realpath(os.path.abspath(os.path.join(os.path.split \
 	(inspect.getfile( inspect.currentframe() ))[0],'../')))
 if cmd_subfolder not in sys.path:
     sys.path.insert(0, cmd_subfolder)
+
+from DataManipulation import *
+from DataProcessing import *
+
+import numpy as np
+
 
 ### MAIN ###
 def apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH, 
