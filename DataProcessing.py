@@ -26,6 +26,7 @@ from pylab import plot, show, pi
 # from mne import Epochs, pick_types, find_events
 
 from sklearn.lda import LDA
+
 # from mne.decoding import CSP # Import Common Spatial Patterns
 from sklearn.pipeline import Pipeline
 
