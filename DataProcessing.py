@@ -36,7 +36,7 @@ class DataFiltering:
     def __init__(self):
         pass
 
-    def DesignFilter(self, fl, fh, srate, forder, filt_type = 'iir'):
+    def DesignFilter(self, fl, fh, srate, forder, filt_type = 'iir', band_type = 'band'):
         
         nyq = 0.5 * srate
         low = fl / nyq
@@ -44,7 +44,7 @@ class DataFiltering:
 
         if filt_type == 'iir':
             # self.b, self.a = sp.butter(self.filter_order, [low, high], btype='band')
-            self.b, self.a = sp.iirfilter(forder, [low, high], btype='band')
+            self.b, self.a = sp.iirfilter(forder, [low, high], btype=band_type)
 
         elif filt_type == 'fir':
             self.b = sp.firwin(forder, [low, high], window = 'hamming',pass_zero=False)
