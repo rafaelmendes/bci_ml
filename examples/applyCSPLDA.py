@@ -10,18 +10,16 @@ if cmd_subfolder not in sys.path:
 
 from CSPLDAapproach import *
 
-DATA_FOLDER_PATH = "/home/rafael/codes/repo/bci_training_platform/data/session/rafael3_long/"
+DATA_FOLDER_PATH = "/home/rafael/codes/repo/bci_training_platform/data/session/old/cleison_17_jun_16ch/"
 
 DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.txt"
 DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.txt"
-
-ACQ_CONFIG_PATH = DATA_FOLDER_PATH + "openbci_config.txt"
 
 # EVENTS INFO PATH
 CAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_cal.txt"
 VAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_val.txt"
 
-SAMPLING_FREQ = 250
+SAMPLING_FREQ = 125.0
 
 # FILTER SPEC
 LOWER_CUTOFF = 8.
@@ -31,9 +29,9 @@ FILT_ORDER = 7
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = dict(LH=1, RH=2)
 
-T_MIN, T_MAX = 0, 4 # time before event, time after event
+T_MIN, T_MAX = 2, 4 # time before event, time after event
 
-CSP_N = 6
+CSP_N = 8
 
 ### MAIN ###
 
