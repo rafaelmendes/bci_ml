@@ -27,12 +27,11 @@ UPPER_CUTOFF = 30.
 FILT_ORDER = 7
 
 # EPOCH EXTRACTION CONFIG:
-# EVENT_IDS = dict(LH=1, RH=2)
 EVENT_IDS = [1,2] 
 
 T_MIN, T_MAX = 2.0, 4.0 # time before event, time after event
 
-CSP_N = 3
+CSP_N = 8
 
 ### MAIN ###
 
