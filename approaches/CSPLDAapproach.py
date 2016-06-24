@@ -15,6 +15,7 @@ from processing_utils import loadBiosig, nanCleaner
 
 import numpy as np
 
+import math
 
 ### MAIN ###
 def apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH, 
@@ -39,8 +40,8 @@ def apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH,
 	data_cal = dp.ApplyFilter(data_cal)
 
 	# FEATURE EXTRACTION:
-	SMIN = T_MIN * SAMPLING_FREQ
-	SMAX = T_MAX * SAMPLING_FREQ
+	SMIN = math.floor(T_MIN * SAMPLING_FREQ)
+	SMAX = math.floor(T_MAX * SAMPLING_FREQ)
 
 	epochs_cal, labels_cal = extractEpochs(data_cal, events_list_cal, SMIN, SMAX)
 

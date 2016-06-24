@@ -29,7 +29,7 @@ FILT_ORDER = 7
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = [1,2] 
 
-T_MIN, T_MAX = 2.0, 4.0 # time before event, time after event
+T_MIN, T_MAX = 0.5, 4 # time before event, time after event
 
 CSP_N = 8
 

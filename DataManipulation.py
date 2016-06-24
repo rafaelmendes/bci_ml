@@ -74,8 +74,7 @@ def extractEpochs(data, e, smin, smax):
 
     labels = events_list[idx]
 
-    print labels.shape
-
+    bad_epoch_list = [] 
     for i in range(n_epochs):
         epoch = data[:,sBegin[i]:sEnd[i]]
 
@@ -84,8 +83,10 @@ def extractEpochs(data, e, smin, smax):
             epochs[i,:,:] = epoch
         else:
             print 'Incomplete epoch detected...'
-            labels = np.delete(labels, (i))
-            epochs = np.delete(epochs, (i), axis = 0)
+            bad_epoch_list.append(i)
+
+    labels = np.delete(labels, bad_epoch_list)
+    epochs = np.delete(epochs, bad_epoch_list, axis = 0)
 
     return epochs, labels
 
