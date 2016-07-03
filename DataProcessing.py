@@ -32,7 +32,7 @@ from sklearn.pipeline import Pipeline
 
 from CommonSpatialPatterns import CSP
     
-class DataFiltering:
+class Filter:
     def __init__(self):
         pass
 
@@ -88,8 +88,7 @@ class DataFiltering:
             new_idx = new_idx.astype(int)
             self.window[new_idx] = self.window[new_idx] +  win_seg
 
-
-class DataLearner:
+class Learner:
     def __init__(self, model = None):
         # Loads a previous model if existent
         self.clf = model
