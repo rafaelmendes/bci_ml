@@ -31,12 +31,56 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.pipeline import Pipeline
 
 from CommonSpatialPatterns import CSP
-    
-class Filter:
-    def __init__(self):
-        pass
 
-    def DesignFilter(self, fl, fh, srate, forder, filt_type = 'iir', band_type = 'band'):
+class Learner:
+    def __init__(self, model = None):
+        # Loads a previous model if existent
+        self.clf = model
+
+    def DesignLDA(self):
+        self.svc = LinearDiscriminantAnalysis()
+
+    def DesignCSP(self, n_comp):
+        self.csp = CSP(n_components=n_comp, reg=None, log=True, cov_est='epoch')
+
+    def AssembleLearner(self):
+        self.clf = Pipeline([('CSP', self.csp), ('SVC', self.svc)])
+
+    def Learn(self, train_epochs, train_labels):
+
+        self.clf.fit(train_epochs, train_labels)
+
+    def EvaluateSet(self, eval_epochs, eval_labels):
+
+        self.score = self.clf.score(eval_epochs, eval_labels)
+
+    def EvaluateEpoch(self, epoch, out_param = 'prob'):
+
+        if out_param == 'prob':
+
+            guess = self.clf.predict_proba(epoch)
+
+        elif out_param == 'label':
+
+            guess = self.clf.predict(epoch)
+
+        return guess
+
+    def PrintResults(self):
+        # class_balance = np.mean(labels == labels[0])
+        # class_balance = max(class_balance, 1. - class_balance)
+        class_balance = 0.5
+        print("Classification accuracy: %f / Chance level: %f" % (self.score,
+                                                                  class_balance))
+    def GetResults(self):
+        return self.score
+
+    def GetModel(self):
+        return self.clf
+
+
+class Filter:
+    def __init__(self, fl, fh, srate, forder, filt_type = 'iir', band_type = 'band'):
         
         nyq = 0.5 * srate
         low = fl / nyq
@@ -87,95 +131,3 @@ class Filter:
             new_idx = idx + seg_len*ov*i
             new_idx = new_idx.astype(int)
             self.window[new_idx] = self.window[new_idx] +  win_seg
-
-class Learner:
-    def __init__(self, model = None):
-        # Loads a previous model if existent
-        self.clf = model
-
-    def DesignLDA(self):
-        self.svc = LinearDiscriminantAnalysis()
-
-    def DesignCSP(self, n_comp):
-        self.csp = CSP(n_components=n_comp, reg=None, log=True, cov_est='epoch')
-
-    def AssembleLearner(self):
-        self.clf = Pipeline([('CSP', self.csp), ('SVC', self.svc)])
-
-    def Learn(self, train_epochs, train_labels):
-
-        self.clf.fit(train_epochs, train_labels)
-
-    def EvaluateSet(self, eval_epochs, eval_labels):
-
-        self.score = self.clf.score(eval_epochs, eval_labels)
-
-    def EvaluateEpoch(self, epoch, out_param = 'prob'):
-
-        if out_param == 'prob':
-
-            guess = self.clf.predict_proba(epoch)
-
-        elif out_param == 'label':
-
-            guess = self.clf.predict(epoch)
-
-        return guess
-
-    def PrintResults(self):
-        # class_balance = np.mean(labels == labels[0])
-        # class_balance = max(class_balance, 1. - class_balance)
-        class_balance = 0.5
-        print("Classification accuracy: %f / Chance level: %f" % (self.score,
-                                                                  class_balance))
-    def GetResults(self):
-        return self.score
-
-    def GetModel(self):
-        return self.clf
-
-def nanCleaner(data_in):
-    """Removes NaN from data by interpolation
-    Parameters
-    ----------
-    data_in : input data - np matrix channels x samples
-
-    Returns
-    -------
-    data_out : clean dataset with no NaN samples
-
-    Examples
-    --------
-    >>> data_path = "/PATH/TO/DATASET/dataset.gdf"
-    >>> EEGdata_withNaN = loadBiosig(data_path)
-    >>> EEGdata_clean = nanCleaner(EEGdata_withNaN)
-    """
-    for i in range(data_in.shape[0]):
-        
-        bad_idx = np.isnan(data_in[i, ...])
-        data_in[i, bad_idx] = np.interp(bad_idx.nonzero()[0], (~bad_idx).nonzero()[0], data_in[i, ~bad_idx])
-    
-    return data_in
-
-def computeAvgFFT(epochs, ch, fs, epoch_idx):
-    
-    n_samples = epochs.shape[2]
-    
-    N = 512
-    
-    T = 1.0 / fs
-
-    n_epochs = epochs.shape[0]
-    
-    ft = np.zeros(N)
-    A = np.zeros(N/2)
- 
-    for i in epoch_idx:
-        epoch = epochs[i,ch,:]      
-        ft = fft(epoch, N)
-        A += 2.0/N * np.abs(ft[0:N/2])
-    
-    A = A / n_epochs        
-    freq = np.linspace(0.0, 1.0/(2.0*T), N/2)
-    
-    return freq, A

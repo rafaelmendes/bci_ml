@@ -1,6 +1,6 @@
 import numpy as np
 
-from DataProcessing import DataFiltering, DataLearner
+from DataProcessing import Filter, Learner
 
 def loadDataAsMatrix(path, cols=[]):
     """Loads text file content as numpy matrix

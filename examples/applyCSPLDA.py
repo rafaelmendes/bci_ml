@@ -10,7 +10,7 @@ if cmd_subfolder not in sys.path:
 
 from CSPLDAapproach import *
 
-DATA_FOLDER_PATH = "/home/rafael/codes/repo/bci_training_platform/data/session/old/cleison_17_jun_16ch/"
+DATA_FOLDER_PATH = "/arquivos/mestrado/repo/bci_training_platform/data/session/cleison_24_jun_16_3_0_mao/"
 
 DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.txt"
 DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.txt"
@@ -29,13 +29,13 @@ FILT_ORDER = 7
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = [1,2] 
 
-T_MIN, T_MAX = 0.5, 4 # time before event, time after event
+T_MIN, T_MAX = 4,6  # time before event, time after event
 
-CSP_N = 8
+CSP_N = 6
 
 ### MAIN ###
 
-results = apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH, 
+results= apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH, 
 		SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, EVENT_IDS, T_MIN, T_MAX)
 
 print results
