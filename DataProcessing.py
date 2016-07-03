@@ -90,8 +90,9 @@ class DataFiltering:
 
 
 class DataLearner:
-    def __init__(self):
-        pass
+    def __init__(self, model = None):
+        # Loads a previous model if existent
+        self.clf = model
 
     def DesignLDA(self):
         self.svc = LinearDiscriminantAnalysis()
@@ -130,6 +131,9 @@ class DataLearner:
                                                                   class_balance))
     def GetResults(self):
         return self.score
+
+    def GetModel(self):
+        return self.clf
 
 def nanCleaner(data_in):
     """Removes NaN from data by interpolation

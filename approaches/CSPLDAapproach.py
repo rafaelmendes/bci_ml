@@ -71,7 +71,7 @@ def apply_ml(DATA_CAL_PATH, CAL_EVENTS_PATH, DATA_VAL_PATH, VAL_EVENTS_PATH,
 
 	dl.PrintResults()
 
-	return dl.GetResults()
+	return dl.GetResults(), dl.getModel()
 
 
 
