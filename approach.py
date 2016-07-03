@@ -70,4 +70,19 @@ class Approach:
 		data_f = self.filter.ApplyFilter(data_in)
 
 		return data_f
+		
+	def saveToPkl(self, path):
+        path += '/approach_info.pkl'
+        
+        with open(path, 'w') as file_name:
+            pickle.dump(self.__dict__, file_name)
+
+
+    def loadFromPkl(self):
+        path += '/approach_info.pkl'
+        
+        with open(path, 'r') as file_name:
+            load_obj = pickle.load(file_name)
+
+        self.__dict__.update(load_obj) 
 
