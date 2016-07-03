@@ -106,9 +106,21 @@ class DataLearner:
 
         self.clf.fit(train_epochs, train_labels)
 
-    def Evaluate(self, eval_epochs, eval_labels):
+    def EvaluateSet(self, eval_epochs, eval_labels):
 
         self.score = self.clf.score(eval_epochs, eval_labels)
+
+    def EvaluateEpoch(self, epoch, out_param = 'prob'):
+
+        if out_param == 'prob':
+
+            guess = self.clf.predict_proba(epoch)
+
+        elif out_param == 'label':
+
+            guess = self.clf.predict(epoch)
+
+        return guess
 
     def PrintResults(self):
         # class_balance = np.mean(labels == labels[0])
