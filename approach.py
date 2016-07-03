@@ -4,6 +4,8 @@ from processing_utils import loadBiosig, nanCleaner
 import math
 from DataManipulation import loadDataAsMatrix, readEvents, extractEpochs
 
+import pickle
+
 class Approach:
     def __init__(self, sample_rate, f_low, f_high, f_order, csp_nei, class_ids, epoch_start, epoch_end):
 
