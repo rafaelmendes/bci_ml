@@ -44,9 +44,14 @@ class Approach:
         score = self.learner.GetResults()
         return score
 
-    def applyModelOnEpoch(self):
+    def applyModelOnEpoch(self, epoch, out_param = 'label'):
         #TODO
-        pass
+
+        epoch_f = self.preProcess(epoch)
+
+        guess = self.learner.EvaluateEpoch(epoch_f, out_param = out_param)
+
+        return guess
 
     def loadCalData(self, data_path, ev_path):
 

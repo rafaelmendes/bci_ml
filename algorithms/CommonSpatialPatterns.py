@@ -156,9 +156,13 @@ class CSP:
         if self.filters_ is None:
             raise RuntimeError('No filters available. Please first fit CSP '
                                'decomposition.')
+        if epochs_data.ndim == 2: 
+            pick_filters = self.filters_[:self.n_components]
+            X = np.asarray([np.dot(pick_filters, epochs_data)])
 
-        pick_filters = self.filters_[:self.n_components]
-        X = np.asarray([np.dot(pick_filters, epoch) for epoch in epochs_data])
+        else:
+            pick_filters = self.filters_[:self.n_components]
+            X = np.asarray([np.dot(pick_filters, epoch) for epoch in epochs_data])
 
         # compute features (mean band power)
         X = (X ** 2).mean(axis=-1)

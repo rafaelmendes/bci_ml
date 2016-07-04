@@ -54,7 +54,7 @@ class Learner:
 
         self.score = self.clf.score(eval_epochs, eval_labels)
 
-    def EvaluateEpoch(self, epoch, out_param = 'prob'):
+    def EvaluateEpoch(self, epoch, out_param = 'label'):
 
         if out_param == 'prob':
 

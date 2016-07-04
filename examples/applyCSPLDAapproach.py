@@ -27,7 +27,7 @@ EVENT_IDS = [1,2]
 
 T_MIN, T_MAX = 4,6  # time before event, time after event
 
-CSP_N = 6
+CSP_N = 12
 
 
 ap = Approach(SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, EVENT_IDS, T_MIN, T_MAX)
@@ -42,3 +42,26 @@ valscore = ap.validateModel()
 
 print autoscore
 print valscore
+
+
+## test on single epoch
+
+i = 0
+while i < len(ap.labels_cal):
+	epoch_number = i
+
+	e = ap.epochs_cal[epoch_number,:,:] #get epoch_number th epoch from calibration dataset
+
+	p = ap.applyModelOnEpoch(e, out_param = 'prob')
+	g = ap.applyModelOnEpoch(e, out_param = 'label')
+
+	right = ap.labels_cal[epoch_number]
+
+	print 'Mister M says probabilities: ', p
+	print 'Mister M says: ', g
+	print 'The right class was: ', right
+	print '-------------------------'
+	print '-------------------------'
+
+
+	i += 1
