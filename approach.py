@@ -88,7 +88,7 @@ class Approach:
             pickle.dump(self.__dict__, file_name)
 
 
-    def loadFromPkl(self):
+    def loadFromPkl(self, path):
         path += '/approach_info.pkl'
         
         with open(path, 'r') as file_name:
