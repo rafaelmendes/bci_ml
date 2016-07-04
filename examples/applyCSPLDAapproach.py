@@ -30,7 +30,9 @@ T_MIN, T_MAX = 4,6  # time before event, time after event
 CSP_N = 12
 
 
-ap = Approach(SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, EVENT_IDS, T_MIN, T_MAX)
+ap = Approach()
+
+ap.defineApproach(SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, EVENT_IDS, T_MIN, T_MAX)
 
 ap.loadCalData(DATA_CAL_PATH, CAL_EVENTS_PATH)
 ap.loadValData(DATA_VAL_PATH, VAL_EVENTS_PATH)

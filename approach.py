@@ -7,7 +7,10 @@ from DataManipulation import loadDataAsMatrix, readEvents, extractEpochs
 import pickle
 
 class Approach:
-    def __init__(self, sample_rate, f_low, f_high, f_order, csp_nei, class_ids, epoch_start, epoch_end):
+    def __init__(self):
+        pass
+
+    def defineApproach(self, sample_rate, f_low, f_high, f_order, csp_nei, class_ids, epoch_start, epoch_end):
 
         # FEATURE EXTRACTION:
         self.smin = int(math.floor(epoch_start * sample_rate))
