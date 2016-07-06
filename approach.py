@@ -12,6 +12,8 @@ class Approach:
 
     def defineApproach(self, sample_rate, f_low, f_high, f_order, csp_nei, class_ids, epoch_start, epoch_end):
 
+        self.class_ids = class_ids
+
         # FEATURE EXTRACTION:
         self.smin = int(math.floor(epoch_start * sample_rate))
         self.smax = int(math.floor(epoch_end * sample_rate))
