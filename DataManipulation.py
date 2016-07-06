@@ -28,7 +28,7 @@ def loadDataAsMatrix(path, cols=[]):
 
     return matrix
 
-def extractEpochs(data, e, smin, smax):
+def extractEpochs(data, e, smin, smax , ev_id):
     """Extracts the epochs from data based on event information
     Parameters
     ----------
@@ -58,9 +58,12 @@ def extractEpochs(data, e, smin, smax):
     
     """
 
+
+
     events_list = e[:,2]
 
-    idx = np.where(events_list != 0)[0]
+    idx = np.where((events_list == ev_id[0]) or
+                   (events_list == ev_id[1]))[0]
     s = e[idx, 0]
 
     sBegin = s + smin

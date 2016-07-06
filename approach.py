@@ -62,7 +62,9 @@ class Approach:
         events = readEvents(ev_path)
 
         self.epochs_cal, self.labels_cal = extractEpochs(data, events, 
-                                                        self.smin, self.smax)
+                                                        self.smin, 
+                                                        self.smax, 
+                                                        self.class_ids)
         self.data_cal = data
 
 
@@ -72,7 +74,9 @@ class Approach:
         events = readEvents(ev_path)
 
         self.epochs_val, self.labels_val = extractEpochs(data, events, 
-                                                        self.smin, self.smax)
+                                                        self.smin, 
+                                                        self.smax, 
+                                                        self.class_ids)
         self.data_val = data
 
     def preProcess(self, data_in):
