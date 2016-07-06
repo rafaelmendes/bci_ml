@@ -61,6 +61,8 @@ class Approach:
     def loadCalData(self, data_path, ev_path):
 
         data = loadDataAsMatrix(data_path).T
+        data = nanCleaner(data)[self.channels,:]
+
         events = readEvents(ev_path)
 
         self.epochs_cal, self.labels_cal = extractEpochs(data, events, 
@@ -73,6 +75,8 @@ class Approach:
     def loadValData(self, data_path, ev_path):
 
         data = loadDataAsMatrix(data_path).T
+        data = nanCleaner(data)[self.channels,:]
+
         events = readEvents(ev_path)
 
         self.epochs_val, self.labels_val = extractEpochs(data, events, 
@@ -86,6 +90,10 @@ class Approach:
         data_f = self.filter.ApplyFilter(data_in)
 
         return data_f
+
+    def setValidChannels(self, channels):
+
+        self.channels = channels
         
     def saveToPkl(self, path):
         path += '/approach_info.pkl'

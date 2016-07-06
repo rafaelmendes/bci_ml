@@ -214,12 +214,12 @@ def computeAcc(resultsA, resultsB):
 
     return acc * 100
 
-def nanCleaner(data):
-    for i in range(data.shape[0]):
-        bad_idx = np.isnan(data[i, ...])
-        data[i, bad_idx] = np.interp(bad_idx.nonzero()[0], (~bad_idx).nonzero()[0], data[i, ~bad_idx])
+# def nanCleaner(data):
+#     for i in range(data.shape[0]):
+#         bad_idx = np.isnan(data[i, ...])
+#         data[i, bad_idx] = np.interp(bad_idx.nonzero()[0], (~bad_idx).nonzero()[0], data[i, ~bad_idx])
 
-    return data
+#     return data
 
 def computeAvgFFT(data, ch):
     T = 1 / sample_rate
@@ -233,29 +233,6 @@ def computeAvgFFT(data, ch):
     plot.grid()
     plot.show()
 
-
-def nanCleaner(data_in):
-    """Removes NaN from data by interpolation
-    Parameters
-    ----------
-    data_in : input data - np matrix channels x samples
-
-    Returns
-    -------
-    data_out : clean dataset with no NaN samples
-
-    Examples
-    --------
-    >>> data_path = "/PATH/TO/DATASET/dataset.gdf"
-    >>> EEGdata_withNaN = loadBiosig(data_path)
-    >>> EEGdata_clean = nanCleaner(EEGdata_withNaN)
-    """
-    for i in range(data_in.shape[0]):
-        
-        bad_idx = np.isnan(data_in[i, ...])
-        data_in[i, bad_idx] = np.interp(bad_idx.nonzero()[0], (~bad_idx).nonzero()[0], data_in[i, ~bad_idx])
-    
-    return data_in
 
 def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
@@ -279,3 +256,27 @@ def computeAvgFFT(epochs, ch, fs, epoch_idx):
     freq = np.linspace(0.0, 1.0/(2.0*T), N/2)
     
     return freq, A
+
+def nanCleaner(data_in):
+    """Removes NaN from data by interpolation
+    Parameters
+    ----------
+    data_in : input data - np matrix channels x samples
+
+    Returns
+    -------
+    data_out : clean dataset with no NaN samples
+
+    Examples
+    --------
+    >>> data_path = "/PATH/TO/DATASET/dataset.gdf"
+    >>> EEGdata_withNaN = loadBiosig(data_path)
+    >>> EEGdata_clean = nanCleaner(EEGdata_withNaN)
+    """
+    for i in range(data_in.shape[0]):
+        
+        bad_idx = np.isnan(data_in[i, :])
+        data_in[i, bad_idx] = np.interp(bad_idx.nonzero()[0], 
+                                (~bad_idx).nonzero()[0], data_in[i, ~bad_idx])
+    
+    return data_in
