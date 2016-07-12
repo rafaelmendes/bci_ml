@@ -27,20 +27,26 @@ class Approach:
 
     def trainModel(self):
 
-        epochs_cal_f = self.preProcess(self.epochs_cal)
-        self.learner.Learn(epochs_cal_f, self.labels_cal)
-        self.learner.EvaluateSet(epochs_cal_f, self.labels_cal)
-        auto_score = self.learner.GetResults()
+        data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
+        epochs, labels = self.loadEpochs(data, ev)
 
-        return auto_score
+        epochs_f = self.preProcess(epochs)
+        self.learner.Learn(epochs_f, labels)
+        self.learner.EvaluateSet(epochs_f, labels)
+        score = self.learner.GetResults()
+
+        return score
 
     def validateModel(self):
 
-        epochs_val_f = self.preProcess(self.epochs_val)
-        self.learner.EvaluateSet(epochs_val_f, self.labels_val)
-        val_score = self.learner.GetResults()
+        data, ev = self.loadData(self.data_val_path, self.events_val_path)
+        epochs, labels = self.loadEpochs(data, ev)
 
-        return val_score
+        epochs_f = self.preProcess(epochs)
+        self.learner.EvaluateSet(epochs_f, labels)
+        score = self.learner.GetResults()
+
+        return score
 
 
     def applyModelOnDataSet(self, epochs, labels):
@@ -58,32 +64,33 @@ class Approach:
 
         return guess
 
-    def loadCalData(self, data_path, ev_path):
+    def setPathToCal(self, dpath, evpath):
 
-        data = loadDataAsMatrix(data_path).T
+        self.data_cal_path = dpath
+        self.events_cal_path = evpath
+
+    def setPathToVal(self, dpath, evpath):
+
+        self.data_val_path = dpath
+        self.events_val_path = evpath
+
+    def loadData(self, dpath, evpath):
+
+        data = loadDataAsMatrix(dpath).T
         data = nanCleaner(data)[self.channels,:]
 
-        events = readEvents(ev_path)
+        events = readEvents(evpath)
 
-        self.epochs_cal, self.labels_cal = extractEpochs(data, events, 
-                                                        self.smin, 
-                                                        self.smax, 
-                                                        self.class_ids)
-        self.data_cal = data
+        return data, events
 
+    def loadEpochs(self, data, events):
 
-    def loadValData(self, data_path, ev_path):
+        epochs_cal, labels = extractEpochs(data, events, 
+                                                self.smin, 
+                                                self.smax, 
+                                                self.class_ids)
+        return epochs_cal, labels
 
-        data = loadDataAsMatrix(data_path).T
-        data = nanCleaner(data)[self.channels,:]
-
-        events = readEvents(ev_path)
-
-        self.epochs_val, self.labels_val = extractEpochs(data, events, 
-                                                        self.smin, 
-                                                        self.smax, 
-                                                        self.class_ids)
-        self.data_val = data
 
     def preProcess(self, data_in):
 

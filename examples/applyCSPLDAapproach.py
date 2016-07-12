@@ -29,13 +29,14 @@ T_MIN, T_MAX = 4,6  # time before event, time after event
 
 CSP_N = 12
 
-
 ap = Approach()
 
 ap.defineApproach(SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, EVENT_IDS, T_MIN, T_MAX)
 
-ap.loadCalData(DATA_CAL_PATH, CAL_EVENTS_PATH)
-ap.loadValData(DATA_VAL_PATH, VAL_EVENTS_PATH)
+ap.setPathToCal(DATA_CAL_PATH, CAL_EVENTS_PATH)
+ap.setPathToVal(DATA_VAL_PATH, VAL_EVENTS_PATH)
+
+ap.setValidChannels(range(16))
 
 autoscore = ap.trainModel()
 
@@ -48,22 +49,22 @@ print valscore
 
 ## test on single epoch
 
-i = 0
-while i < len(ap.labels_cal):
-	epoch_number = i
+# i = 0
+# while i < len(ap.labels_cal):
+# 	epoch_number = i
 
-	e = ap.epochs_cal[epoch_number,:,:] #get epoch_number th epoch from calibration dataset
+# 	e = ap.epochs_cal[epoch_number,:,:] #get epoch_number th epoch from calibration dataset
 
-	p = ap.applyModelOnEpoch(e, out_param = 'prob')
-	g = ap.applyModelOnEpoch(e, out_param = 'label')
+# 	p = ap.applyModelOnEpoch(e, out_param = 'prob')
+# 	g = ap.applyModelOnEpoch(e, out_param = 'label')
 
-	right = ap.labels_cal[epoch_number]
+# 	right = ap.labels_cal[epoch_number]
 
-	print 'Mister M says probabilities: ', p
-	print 'Mister M says: ', g
-	print 'The right class was: ', right
-	print '-------------------------'
-	print '-------------------------'
+# 	print 'Mister M says probabilities: ', p
+# 	print 'Mister M says: ', g
+# 	print 'The right class was: ', right
+# 	print '-------------------------'
+# 	print '-------------------------'
 
 
-	i += 1
+# 	i += 1
