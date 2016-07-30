@@ -2,7 +2,7 @@ import numpy as np
 
 from DataProcessing import Filter, Learner
 
-def loadDataAsMatrix(path, cols=[]):
+def loadDataAsMatrix(path):
     """Loads text file content as numpy matrix
     Parameters
     ----------
@@ -21,10 +21,10 @@ def loadDataAsMatrix(path, cols=[]):
     """
     
     if cols == []:
-        matrix = np.load(open(path,"rb"), skiprows=1)
+        matrix = np.load(open(path,"rb"))
         
     else:
-        matrix = np.load(open(path,"rb"), skiprows=1, usecols=cols)
+        matrix = np.load(open(path,"rb"))
 
     return matrix
 
