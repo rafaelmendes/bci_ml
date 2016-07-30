@@ -76,7 +76,7 @@ class Approach:
 
     def loadData(self, dpath, evpath):
 
-        data = loadDataAsMatrix(dpath).T
+        data = loadDataAsMatrix(dpath).T[self.channels]
         data = nanCleaner(data)
         events = readEvents(evpath)
 
@@ -98,7 +98,6 @@ class Approach:
         return data_f
 
     def setValidChannels(self, channels):
-
         self.channels = channels
         
     def saveToPkl(self, path):

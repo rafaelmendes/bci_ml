@@ -6,16 +6,16 @@ sys.path.insert(0, '../')
 from approach import Approach
 
 
-DATA_FOLDER_PATH = "/arquivos/mestrado/repo/bci_training_platform/data/session/cleison_24_jun_16_3_0_mao/"
+DATA_FOLDER_PATH = "/arquivos/mestrado/repo/bci_training_platform/data/session/A05_bciIV/"
 
-DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.txt"
-DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.txt"
+DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.npy"
+DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.npy"
 
 # EVENTS INFO PATH
-CAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_cal.txt"
-VAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_val.txt"
+CAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_cal.npy"
+VAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_val.npy"
 
-SAMPLING_FREQ = 125.0
+SAMPLING_FREQ = 250.0
 
 # FILTER SPEC
 LOWER_CUTOFF = 8.
@@ -36,7 +36,7 @@ ap.defineApproach(SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, 
 ap.setPathToCal(DATA_CAL_PATH, CAL_EVENTS_PATH)
 ap.setPathToVal(DATA_VAL_PATH, VAL_EVENTS_PATH)
 
-ap.setValidChannels(range(16))
+ap.setValidChannels(range(22))
 
 autoscore = ap.trainModel()
 
