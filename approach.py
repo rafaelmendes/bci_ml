@@ -77,8 +77,6 @@ class Approach:
     def loadData(self, dpath, evpath):
 
         data = loadDataAsMatrix(dpath).T
-        data = nanCleaner(data)[self.channels,:]
-
         events = readEvents(evpath)
 
         return data, events
@@ -94,8 +92,9 @@ class Approach:
 
     def preProcess(self, data_in):
 
+        data_in = nanCleaner(data_in)
         data_f = self.filter.ApplyFilter(data_in)
-
+        
         return data_f
 
     def setValidChannels(self, channels):

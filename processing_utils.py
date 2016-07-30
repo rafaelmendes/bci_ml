@@ -257,7 +257,7 @@ def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
     return freq, A
 
-def nanCleaner(data_in):
+def nanCleaner(d):
     """Removes NaN from data by interpolation
     Parameters
     ----------
@@ -273,8 +273,6 @@ def nanCleaner(data_in):
     >>> EEGdata_withNaN = loadBiosig(data_path)
     >>> EEGdata_clean = nanCleaner(EEGdata_withNaN)
     """
-
-    d = data_in.T
 
     for i in range(d.shape[0]):
         
