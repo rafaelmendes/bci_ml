@@ -75,7 +75,7 @@ class Approach:
         self.events_val_path = evpath
 
     def loadData(self, dpath, evpath):
-        if self.channels == -1:
+        if self.channels == [-1]:
             data = loadDataAsMatrix(dpath).T
         else:
             data = loadDataAsMatrix(dpath).T[self.channels]
