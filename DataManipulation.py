@@ -102,7 +102,7 @@ def loadChannelLabels(path):
 
 def readEvents(events_path):
 
-    e = np.loadtxt(events_path, skiprows=0)
+    e = np.load(events_path)
     # insert dummy column to fit mne event list format
     t_events = np.insert(e, 1, values=0, axis=1)
     t_events = t_events.astype(int) # convert to integer
