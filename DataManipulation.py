@@ -55,7 +55,8 @@ def extractEpochs(data, e, smin, smax , ev_id):
     """
 
     events_list = e[:,2]
-    cond = (events_list == ev_id[0]) + (events_list == ev_id[1])
+
+    cond = (events_list == ev_id[0]) + (events_list == ev_id[1]) 
 
     idx = np.where(cond)[0]
     s = e[idx, 0]
