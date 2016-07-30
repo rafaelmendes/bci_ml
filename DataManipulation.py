@@ -20,11 +20,7 @@ def loadDataAsMatrix(path):
     >>> matrix_data = loadAsMatrix(data_path)
     """
     
-    if cols == []:
-        matrix = np.load(open(path,"rb"))
-        
-    else:
-        matrix = np.load(open(path,"rb"))
+    matrix = np.load(open(path,"rb"))
 
     return matrix
 
