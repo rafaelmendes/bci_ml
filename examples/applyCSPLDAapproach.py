@@ -20,12 +20,12 @@ SAMPLING_FREQ = 250.0
 # FILTER SPEC
 LOWER_CUTOFF = 8.
 UPPER_CUTOFF = 30.
-FILT_ORDER = 7
+FILT_ORDER = 5
 
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = [1,2] 
 
-T_MIN, T_MAX = 4,6  # time before event, time after event
+T_MIN, T_MAX = 2.5,4.5  # time before event, time after event
 
 CSP_N = 12
 
@@ -41,7 +41,6 @@ ap.setValidChannels(range(22))
 autoscore = ap.trainModel()
 
 valscore = ap.validateModel()
-
 
 print autoscore
 print valscore
