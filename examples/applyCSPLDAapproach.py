@@ -36,7 +36,7 @@ ap.defineApproach(SAMPLING_FREQ, LOWER_CUTOFF, UPPER_CUTOFF, FILT_ORDER, CSP_N, 
 ap.setPathToCal(DATA_CAL_PATH, CAL_EVENTS_PATH)
 ap.setPathToVal(DATA_VAL_PATH, VAL_EVENTS_PATH)
 
-ap.setValidChannels(range(22))
+ap.setValidChannels(-1)
 
 autoscore = ap.trainModel()
 
