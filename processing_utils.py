@@ -273,10 +273,13 @@ def nanCleaner(data_in):
     >>> EEGdata_withNaN = loadBiosig(data_path)
     >>> EEGdata_clean = nanCleaner(EEGdata_withNaN)
     """
-    for i in range(data_in.shape[0]):
+
+    d = data_in.T
+
+    for i in range(d.shape[0]):
         
-        bad_idx = np.isnan(data_in[i, :])
-        data_in[i, bad_idx] = np.interp(bad_idx.nonzero()[0], 
-                                (~bad_idx).nonzero()[0], data_in[i, ~bad_idx])
+        bad_idx = np.isnan(d[i, :])
+        d[i, bad_idx] = np.interp(bad_idx.nonzero()[0], 
+                                (~bad_idx).nonzero()[0], d[i, ~bad_idx])
     
-    return data_in
+    return d
