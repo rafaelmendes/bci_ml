@@ -21,10 +21,10 @@ def loadDataAsMatrix(path, cols=[]):
     """
     
     if cols == []:
-        matrix = np.loadtxt(open(path,"rb"), skiprows=1)
+        matrix = np.load(open(path,"rb"), skiprows=1)
         
     else:
-        matrix = np.loadtxt(open(path,"rb"), skiprows=1, usecols=cols)
+        matrix = np.load(open(path,"rb"), skiprows=1, usecols=cols)
 
     return matrix
 
@@ -95,7 +95,7 @@ def extractEpochs(data, e, smin, smax , ev_id):
 def saveMatrixAsTxt(data_in, path, mode = 'a'):
 
     with open(path, mode) as data_file:    
-        np.savetxt(data_file, data_in)
+        np.save(data_file, data_in)
 
 def loadChannelLabels(path):
     # if os.path.exists("data/rafael/precal_config"):
