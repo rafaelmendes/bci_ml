@@ -56,11 +56,11 @@ new_events = np.zeros([1,2])
 
 for i in range(6):
 	new_data = np.vstack([new_data, epochs[idx_1[i]].T])
-	new_events = np.vstack([new_events, [new_data.shape[0], 1]])
+	new_events = np.vstack([new_events, [1, new_data.shape[0]]])
 
 for i in range(6):
 	new_data = np.vstack([new_data, epochs[idx_2[i]].T])
-	new_events = np.vstack([new_events, [new_data.shape[0], 2]])
+	new_events = np.vstack([new_events, [2, new_data.shape[0]]])
 
 new_data = np.delete(new_data, 0, axis= 0)
 new_events = np.delete(new_events, 0, axis= 0)
