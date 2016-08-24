@@ -25,7 +25,7 @@ from pylab import plot, show, pi
 
 # from mne import Epochs, pick_types, find_events
 
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.lda import LDA
 
 # from mne.decoding import CSP # Import Common Spatial Patterns
 from sklearn.pipeline import Pipeline
@@ -38,7 +38,7 @@ class Learner:
         self.clf = model
 
     def DesignLDA(self):
-        self.svc = LinearDiscriminantAnalysis()
+        self.svc = LDA()
 
     def DesignCSP(self, n_comp):
         self.csp = CSP(n_components=n_comp, reg=None, log=True, cov_est='epoch')
