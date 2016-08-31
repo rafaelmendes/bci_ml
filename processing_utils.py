@@ -221,17 +221,17 @@ def computeAcc(resultsA, resultsB):
 
 #     return data
 
-def computeAvgFFT(data, ch):
-    T = 1 / sample_rate
+# def computeAvgFFT(data, ch):
+#     T = 1 / sample_rate
 
-    n = data.shape[1]
+#     n = data.shape[1]
 
-    ft = fft(data[:,ch,:]) / n 
-    freq = np.linspace(0.0, 1.0/(2.0*T), n/2)
+#     ft = fft(data[:,ch,:]) / n 
+#     freq = np.linspace(0.0, 1.0/(2.0*T), n/2)
 
-    plot.plot(freq, 2.0/N * np.abs(ft[0:N/2]))
-    plot.grid()
-    plot.show()
+#     plot.plot(freq, 2.0/N * np.abs(ft[0:N/2]))
+#     plot.grid()
+#     plot.show()
 
 
 def computeAvgFFT(epochs, ch, fs, epoch_idx):
