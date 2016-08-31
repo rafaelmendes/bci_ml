@@ -6,7 +6,7 @@ sys.path.insert(0, '../')
 from approach import Approach
 
 
-DATA_FOLDER_PATH = "/arquivos/mestrado/repo/bci_training_platform/data/session/A05_bciIV/"
+DATA_FOLDER_PATH = "/home/rafael/repo/bci_training_platform/data/session/cleison1/"
 
 DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.npy"
 DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.npy"
@@ -25,7 +25,7 @@ FILT_ORDER = 5
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = [1,2] 
 
-T_MIN, T_MAX = 2.5,4.5  # time before event, time after event
+T_MIN, T_MAX = 2,4  # time before event, time after event
 
 CSP_N = 12
 
@@ -37,6 +37,7 @@ ap.setPathToCal(DATA_CAL_PATH, CAL_EVENTS_PATH)
 ap.setPathToVal(DATA_VAL_PATH, VAL_EVENTS_PATH)
 
 ap.setValidChannels([-1])
+ap.set_balance_epochs(False)
 
 autoscore = ap.trainModel()
 

@@ -273,7 +273,7 @@ def nanCleaner(d):
 
 def plot_spectogram(data_in, fs):
 
-    f, t, Sxx = sp.spectrogram(data_in, fs, nperseg=125, noverlap=80)
+    f, t, Sxx = sp.spectrogram(data_in, fs, nperseg=50, noverlap=49)
     plt.pcolormesh(t, f, Sxx)
     plt.ylabel('Frequency [Hz]')
     plt.xlabel('Time [sec]')

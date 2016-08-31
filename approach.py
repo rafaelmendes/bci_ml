@@ -5,6 +5,7 @@ import math
 from DataManipulation import loadDataAsMatrix, readEvents, extractEpochs
 
 import pickle
+import numpy as np
 
 class Approach:
     def __init__(self):
@@ -24,6 +25,8 @@ class Approach:
         self.learner.DesignLDA()
         self.learner.DesignCSP(csp_nei)
         self.learner.AssembleLearner()
+
+        self.balance_epochs = False
 
     def trainModel(self):
 
@@ -87,11 +90,23 @@ class Approach:
 
     def loadEpochs(self, data, events):
 
-        epochs_cal, labels = extractEpochs(data, events, 
+        epochs, labels = extractEpochs(data, events, 
                                                 self.smin, 
                                                 self.smax, 
                                                 self.class_ids)
-        return epochs_cal, labels
+
+        idx_1 = np.where(labels == self.class_ids[0])[0]
+        idx_2 = np.where(labels == self.class_ids[1])[0]
+
+        if self.balance_epochs:
+            nepochs = min([len(idx_1), len(idx_2)])
+            idx_1 = idx_1[:nepochs]
+            idx_2 = idx_2[:nepochs]
+            idx = np.concatenate([idx_1,idx_2])
+
+            return epochs[idx],labels[idx]
+        else:
+            return epochs, labels
 
 
     def preProcess(self, data_in):
@@ -102,6 +117,14 @@ class Approach:
 
     def setValidChannels(self, channels):
         self.channels = channels
+
+    def set_balance_epochs(self, balance_epochs):
+        ''' Set balance epochs: the number of epochs loaded from one class will
+        be the same as the number of epochs loaded for the opposite class. The 
+        number of epochs is defined as the minimum from both classes. This avoid
+        model bias when training.
+        '''
+        self.balance_epochs = balance_epochs
         
     def saveToPkl(self, path):
         path += '/approach_info.pkl'
