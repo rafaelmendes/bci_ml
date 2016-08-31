@@ -2,9 +2,7 @@ import sys
 sys.path.insert(0, '../')
 
 from approach import Approach
-
-from processing_utils import computeAvgFFT
-
+from processing_utils import computeAvgFFT, plot_spectogram, compute_time_avg
 import matplotlib.pyplot as plt
 
 
@@ -29,7 +27,7 @@ FILT_ORDER = 5
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = [1,2] 
 
-T_MIN, T_MAX = 2.5,4.5  # time before event, time after event
+T_MIN, T_MAX = -2,4  # time before event, time after event
 
 CSP_N = 12
 
@@ -51,10 +49,6 @@ epochs, labels = ap.loadEpochs(data,events)
 idx_1 = np.where(labels == 1)[0]
 idx_2 = np.where(labels == 2)[0]
 
-f, A1 = computeAvgFFT(epochs,0,125, idx_1)
-f, A2 = computeAvgFFT(epochs,0,125, idx_2)
+avg1 = compute_time_avg(epochs,0, idx_1)
 
-plt.plot(f, A1)
-plt.plot(f, A2)
-
-plt.show()
+plot_spectogram(avg1, SAMPLING_FREQ)

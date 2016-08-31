@@ -16,6 +16,8 @@ from scipy.fftpack import fft
 
 from pylab import plot, show, pi
 
+import matplotlib.pyplot as plt
+
 def loadBiosig(fname):
     """Loads biosig compatible datasets.
     Parameters
@@ -214,6 +216,13 @@ def computeAcc(resultsA, resultsB):
 
     return acc * 100
 
+def compute_time_avg(epochs,ch, epochs_idx):
+    sel_epochs = epochs[epochs_idx, ch, :]
+
+    avg = np.mean(sel_epochs, axis=0)
+
+    return avg
+
 def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
     n_samples = epochs.shape[2]
@@ -261,3 +270,11 @@ def nanCleaner(d):
                                 (~bad_idx).nonzero()[0], d[i, ~bad_idx])
     
     return d
+
+def plot_spectogram(data_in, fs):
+
+    f, t, Sxx = sp.spectrogram(data_in, fs, nperseg=125, noverlap=80)
+    plt.pcolormesh(t, f, Sxx)
+    plt.ylabel('Frequency [Hz]')
+    plt.xlabel('Time [sec]')
+    plt.show()
