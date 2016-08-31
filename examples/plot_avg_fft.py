@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-DATA_FOLDER_PATH = "/home/rafael/repo/bci_training_platform/data/session/cleison1/"
+DATA_FOLDER_PATH = "/home/rafael/repo/bci_training_platform/data/session/cleison_handvfeet/"
 
 DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.npy"
 DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.npy"
@@ -49,8 +49,8 @@ calepoch, callabels = ap.loadEpochs(dcal,evcal)
 idx_1 = np.where(callabels == 1)[0]
 idx_2 = np.where(callabels == 2)[0]
 
-f, A1 = computeAvgFFT(calepoch,1,125, idx_1)
-f, A2 = computeAvgFFT(calepoch,1,125, idx_2)
+f, A1 = computeAvgFFT(calepoch,0,125, idx_1)
+f, A2 = computeAvgFFT(calepoch,0,125, idx_2)
 
 plt.plot(f, A1)
 plt.plot(f, A2)

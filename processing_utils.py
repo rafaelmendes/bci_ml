@@ -214,26 +214,6 @@ def computeAcc(resultsA, resultsB):
 
     return acc * 100
 
-# def nanCleaner(data):
-#     for i in range(data.shape[0]):
-#         bad_idx = np.isnan(data[i, ...])
-#         data[i, bad_idx] = np.interp(bad_idx.nonzero()[0], (~bad_idx).nonzero()[0], data[i, ~bad_idx])
-
-#     return data
-
-# def computeAvgFFT(data, ch):
-#     T = 1 / sample_rate
-
-#     n = data.shape[1]
-
-#     ft = fft(data[:,ch,:]) / n 
-#     freq = np.linspace(0.0, 1.0/(2.0*T), n/2)
-
-#     plot.plot(freq, 2.0/N * np.abs(ft[0:N/2]))
-#     plot.grid()
-#     plot.show()
-
-
 def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
     n_samples = epochs.shape[2]
