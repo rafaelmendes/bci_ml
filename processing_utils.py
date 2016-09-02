@@ -14,7 +14,7 @@ import scipy.linalg as lg
 
 from scipy.fftpack import fft
 
-from pylab import plot, show, pi
+from math import pi
 
 import matplotlib.pyplot as plt
 
