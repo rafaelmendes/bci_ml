@@ -21,7 +21,7 @@ import scipy.linalg as lg
 
 from scipy.fftpack import fft
 
-from pylab import plot, show, pi
+from pylab import pi
 
 # from mne import Epochs, pick_types, find_events
 
