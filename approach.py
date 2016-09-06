@@ -53,12 +53,12 @@ class Approach:
 
     def cross_validate_model(self, n_iter, test_perc):
 
-        data, ev = self.loadData(self.data_cal_path, self.events_cal_path, \
-                                    n_iter, test_perc)
+        data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
         epochs, labels = self.loadEpochs(data, ev)
 
         epochs_f = self.preProcess(epochs)
-        score = self.learner.cross_evaluate_set(epochs_f, labels)
+        score = self.learner.cross_evaluate_set(epochs_f, labels, \
+                                    n_iter, test_perc)
 
         return score
 
