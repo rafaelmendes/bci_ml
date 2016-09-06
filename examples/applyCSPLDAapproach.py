@@ -1,12 +1,10 @@
-
-
 import sys
 sys.path.insert(0, '../')
 
 from approach import Approach
 
 
-DATA_FOLDER_PATH = "/home/rafael/repo/bci_training_platform/data/session/cleison1/"
+DATA_FOLDER_PATH = "/home/rafael/repo/bci_training_platform/data/session/cleison_handvfeet/"
 
 DATA_CAL_PATH = DATA_FOLDER_PATH + "data_cal.npy"
 DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.npy"
@@ -15,7 +13,7 @@ DATA_VAL_PATH = DATA_FOLDER_PATH + "data_val.npy"
 CAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_cal.npy"
 VAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_val.npy"
 
-SAMPLING_FREQ = 250.0
+SAMPLING_FREQ = 125.0
 
 # FILTER SPEC
 LOWER_CUTOFF = 8.
@@ -25,7 +23,7 @@ FILT_ORDER = 5
 # EPOCH EXTRACTION CONFIG:
 EVENT_IDS = [1,2] 
 
-T_MIN, T_MAX = 2,4  # time before event, time after event
+T_MIN, T_MAX = 2.5,4.5  # time before event, time after event
 
 CSP_N = 12
 
@@ -45,7 +43,6 @@ valscore = ap.validateModel()
 
 print autoscore
 print valscore
-
 
 ## test on single epoch
 

@@ -3,11 +3,6 @@ sys.path.insert(0, '../')
 
 from approach import Approach
 
-from processing_utils import computeAvgFFT
-
-import matplotlib.pyplot as plt
-
-import numpy as np
 
 DATA_FOLDER_PATH = "/home/rafael/repo/bci_training_platform/data/session/cleison_handvfeet/"
 
@@ -21,7 +16,7 @@ VAL_EVENTS_PATH = DATA_FOLDER_PATH + "events_val.npy"
 SAMPLING_FREQ = 125.0
 
 # FILTER SPEC
-LOWER_CUTOFF = 2.
+LOWER_CUTOFF = 8.
 UPPER_CUTOFF = 30.
 FILT_ORDER = 5
 
@@ -40,20 +35,15 @@ ap.setPathToCal(DATA_CAL_PATH, CAL_EVENTS_PATH)
 ap.setPathToVal(DATA_VAL_PATH, VAL_EVENTS_PATH)
 
 ap.setValidChannels([-1])
+ap.set_balance_epochs(False)
 
-data, events = ap.loadData(DATA_CAL_PATH, CAL_EVENTS_PATH)
+crossvalscore = ap.cross_validate_model()
 
-data = ap.preProcess(data)
+print 'Cross Validation result: ', crossvalscore
 
-epochs, labels = ap.loadEpochs(data,events)
+autoscore = ap.trainModel()
 
-idx_1 = np.where(labels == 1)[0]
-idx_2 = np.where(labels == 2)[0]
+valscore = ap.validateModel()
 
-f, A1 = computeAvgFFT(epochs,0,125, idx_1)
-f, A2 = computeAvgFFT(epochs,0,125, idx_2)
-
-plt.plot(f, A1)
-plt.plot(f, A2)
-
-plt.show()
+print 'SelfValidation result: ', autoscore
+print 'Validation result: ', valscore

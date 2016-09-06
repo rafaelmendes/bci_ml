@@ -26,6 +26,8 @@ from pylab import plot, show, pi
 # from mne import Epochs, pick_types, find_events
 
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn.cross_validation import ShuffleSplit
+from sklearn.cross_validation import cross_val_score
 
 # from mne.decoding import CSP # Import Common Spatial Patterns
 from sklearn.pipeline import Pipeline
@@ -53,6 +55,13 @@ class Learner:
     def EvaluateSet(self, eval_epochs, eval_labels):
 
         self.score = self.clf.score(eval_epochs, eval_labels)
+
+    def cross_evaluate_set(self, eval_epochs, eval_labels):
+
+        cv = ShuffleSplit(len(eval_labels), 10, test_size=0.2, random_state=42)
+        scores = cross_val_score(self.clf, eval_epochs, eval_labels, cv=cv)
+
+        return scores.mean()
 
     def EvaluateEpoch(self, epoch, out_param = 'label'):
 
