@@ -56,9 +56,9 @@ class Learner:
 
         self.score = self.clf.score(eval_epochs, eval_labels)
 
-    def cross_evaluate_set(self, eval_epochs, eval_labels):
+    def cross_evaluate_set(self, eval_epochs, eval_labels, n_iter=10, test_perc=0.2):
 
-        cv = ShuffleSplit(len(eval_labels), 10, test_size=0.2, random_state=42)
+        cv = ShuffleSplit(len(eval_labels), n_iter, test_size=test_perc, random_state=42)
         scores = cross_val_score(self.clf, eval_epochs, eval_labels, cv=cv)
 
         return scores.mean()

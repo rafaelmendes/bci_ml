@@ -37,7 +37,7 @@ ap.setPathToVal(DATA_VAL_PATH, VAL_EVENTS_PATH)
 ap.setValidChannels([-1])
 ap.set_balance_epochs(False)
 
-crossvalscore = ap.cross_validate_model()
+crossvalscore = ap.cross_validate_model(10, 0.2)
 
 print 'Cross Validation result: ', crossvalscore
 
