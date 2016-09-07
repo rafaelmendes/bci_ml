@@ -12,6 +12,8 @@ import math as math # used for basic mathematical operations
 import scipy.signal as sp
 import scipy.linalg as lg
 
+from sklearn.metrics import mean_squared_error
+
 from scipy.fftpack import fft
 
 from math import pi
@@ -246,6 +248,27 @@ def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
     return freq, A
 
+def computeFFT(epoch, ch, fs):
+    
+    n_samples = epoch.shape[1]
+
+    data = epoch[ch]
+    
+    N = 512
+    
+    T = 1.0 / fs
+    
+    ft = np.zeros(N)
+    A = np.zeros(N/2)
+     
+    ft = fft(data, N)
+
+    A = 2.0/N * np.abs(ft[0:N/2])
+
+    freq = np.linspace(0.0, 1.0/(2.0*T), N/2)
+    
+    return freq, A
+
 def nanCleaner(d):
     """Removes NaN from data by interpolation
     Parameters
@@ -278,3 +301,38 @@ def plot_spectogram(data_in, fs):
     plt.ylabel('Frequency [Hz]')
     plt.xlabel('Time [sec]')
     plt.show()
+
+def find_bad_amplitude_epochs(epochs, threshold):
+
+    bad_idx=[]
+
+    for i in range(epochs.shape[0]):
+        data=epochs[i]
+        if np.sum(data>threshold):
+            bad_idx.extend([i])
+
+    print 'Found {} bad epochs'.format(len(bad_idx))
+    
+    return bad_idx
+
+def find_bad_fft_epochs(epochs, threshold):
+
+    nepochs = epochs.shape[0]
+
+    bad_idx=[]
+
+    f, Aavg = computeAvgFFT(epochs, 0, 125, range(nepochs))
+
+    for i in range(nepochs):
+        data=epochs[i]
+
+        f, A = computeFFT(data, 0, 125)
+
+        err= mean_squared_error(A, Aavg)
+
+        if err>threshold:
+            bad_idx.extend([i])
+
+    print 'Found {} bad fft epochs'.format(len(bad_idx))
+    
+    return bad_idx

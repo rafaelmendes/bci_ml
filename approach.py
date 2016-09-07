@@ -1,6 +1,7 @@
 
 from DataProcessing import Learner, Filter
-from processing_utils import loadBiosig, nanCleaner
+from processing_utils import loadBiosig, nanCleaner, \
+                                find_bad_amplitude_epochs, find_bad_fft_epochs
 import math
 from DataManipulation import loadDataAsMatrix, readEvents, extractEpochs
 
@@ -33,9 +34,9 @@ class Approach:
         data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
         epochs, labels = self.loadEpochs(data, ev)
 
-        epochs_f = self.preProcess(epochs)
-        self.learner.Learn(epochs_f, labels)
-        self.learner.EvaluateSet(epochs_f, labels)
+        epochs_f, labels_f = self.preProcess(epochs, labels)
+        self.learner.Learn(epochs_f, labels_f)
+        self.learner.EvaluateSet(epochs_f, labels_f)
         score = self.learner.GetResults()
 
         return score
@@ -45,8 +46,8 @@ class Approach:
         data, ev = self.loadData(self.data_val_path, self.events_val_path)
         epochs, labels = self.loadEpochs(data, ev)
 
-        epochs_f = self.preProcess(epochs)
-        self.learner.EvaluateSet(epochs_f, labels)
+        epochs_f, labels_f = self.preProcess(epochs, labels)
+        self.learner.EvaluateSet(epochs_f, labels_f)
         score = self.learner.GetResults()
 
         return score
@@ -56,8 +57,8 @@ class Approach:
         data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
         epochs, labels = self.loadEpochs(data, ev)
 
-        epochs_f = self.preProcess(epochs)
-        score = self.learner.cross_evaluate_set(epochs_f, labels, \
+        epochs_f, labels_f = self.preProcess(epochs, labels)
+        score = self.learner.cross_evaluate_set(epochs_f, labels_f, \
                                     n_iter, test_perc)
 
         return score
@@ -71,7 +72,7 @@ class Approach:
     def applyModelOnEpoch(self, epoch, out_param = 'label'):
         #TODO
 
-        epoch_f = self.preProcess(epoch)
+        epoch_f = self.preProcess(epoch, [])
 
         guess = self.learner.EvaluateEpoch(epoch_f, out_param = out_param)
 
@@ -119,11 +120,23 @@ class Approach:
             return epochs, labels
 
 
-    def preProcess(self, data_in):
+    def preProcess(self, data_in, labels_in):
+
+        bad_idx=[]
 
         data_f = self.filter.ApplyFilter(data_in)
-        
-        return data_f
+
+        bad_idx_fft = find_bad_fft_epochs(data_f, 0.03)
+
+        bad_idx_amp = find_bad_amplitude_epochs(data_f, 40)
+
+        bad_idx.extend(bad_idx_fft)
+        bad_idx.extend(bad_idx_amp)
+
+        data_out = np.delete(data_f, bad_idx, axis=0)
+        labels_out = np.delete(labels_in, bad_idx, axis=0)
+
+        return data_out, labels_out
 
     def setValidChannels(self, channels):
         self.channels = channels
