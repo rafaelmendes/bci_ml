@@ -315,18 +315,18 @@ def find_bad_amplitude_epochs(epochs, threshold):
     
     return bad_idx
 
-def find_bad_fft_epochs(epochs, threshold):
+def find_bad_fft_epochs(epochs, threshold, ch, fs, Aavg = None):
 
     nepochs = epochs.shape[0]
 
     bad_idx=[]
-
-    f, Aavg = computeAvgFFT(epochs, 0, 125, range(nepochs))
+    if Aavg == None: 
+        f, Aavg = computeAvgFFT(epochs, ch, fs, range(nepochs))
 
     for i in range(nepochs):
         data=epochs[i]
 
-        f, A = computeFFT(data, 0, 125)
+        f, A = computeFFT(data, ch, fs)
 
         err= mean_squared_error(A, Aavg)
 

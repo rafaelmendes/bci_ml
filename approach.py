@@ -1,7 +1,8 @@
 
 from DataProcessing import Learner, Filter
 from processing_utils import loadBiosig, nanCleaner, \
-                                find_bad_amplitude_epochs, find_bad_fft_epochs
+                                find_bad_amplitude_epochs, find_bad_fft_epochs, \
+                                    computeAvgFFT
 import math
 from DataManipulation import loadDataAsMatrix, readEvents, extractEpochs
 
@@ -29,14 +30,20 @@ class Approach:
 
         self.balance_epochs = False
 
+    def define_bad_epochs(self, max_amp, max_fft_mse):
+        self.max_amp = max_amp
+        self.max_fft_mse = max_fft_mse
+
     def trainModel(self):
 
         data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
         epochs, labels = self.loadEpochs(data, ev)
 
-        epochs_f, labels_f = self.preProcess(epochs, labels)
-        self.learner.Learn(epochs_f, labels_f)
-        self.learner.EvaluateSet(epochs_f, labels_f)
+        epochs = self.preProcess(epochs)
+        epochs, labels = self.reject_epochs(epochs, labels)
+
+        self.learner.Learn(epochs, labels)
+        self.learner.EvaluateSet(epochs, labels)
         score = self.learner.GetResults()
 
         return score
@@ -46,8 +53,8 @@ class Approach:
         data, ev = self.loadData(self.data_val_path, self.events_val_path)
         epochs, labels = self.loadEpochs(data, ev)
 
-        epochs_f, labels_f = self.preProcess(epochs, labels)
-        self.learner.EvaluateSet(epochs_f, labels_f)
+        epochs = self.preProcess(epochs)
+        self.learner.EvaluateSet(epochs, labels)
         score = self.learner.GetResults()
 
         return score
@@ -57,8 +64,10 @@ class Approach:
         data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
         epochs, labels = self.loadEpochs(data, ev)
 
-        epochs_f, labels_f = self.preProcess(epochs, labels)
-        score = self.learner.cross_evaluate_set(epochs_f, labels_f, \
+        epochs = self.preProcess(epochs)
+        epochs, labels = self.reject_epochs(epochs, labels)
+
+        score = self.learner.cross_evaluate_set(epochs, labels, \
                                     n_iter, test_perc)
 
         return score
@@ -70,11 +79,13 @@ class Approach:
         return score
 
     def applyModelOnEpoch(self, epoch, out_param = 'label'):
-        #TODO
 
-        epoch_f = self.preProcess(epoch, [])
+        epoch_f = self.preProcess(epoch)
 
-        guess = self.learner.EvaluateEpoch(epoch_f, out_param = out_param)
+        if not epoch == []: 
+            guess = self.learner.EvaluateEpoch(epoch_f, out_param = out_param)
+        else:
+            guess = None
 
         return guess
 
@@ -94,7 +105,6 @@ class Approach:
         else:
             data = loadDataAsMatrix(dpath).T[self.channels]
 
-        data = nanCleaner(data)
         events = readEvents(evpath)
 
         return data, events
@@ -120,23 +130,27 @@ class Approach:
             return epochs, labels
 
 
-    def preProcess(self, data_in, labels_in):
+    def preProcess(self, data_in):
 
-        bad_idx=[]
+        data = nanCleaner(data_in)
+        data_out = self.filter.ApplyFilter(data)
 
-        data_f = self.filter.ApplyFilter(data_in)
+        return data_out
 
-        bad_idx_fft = find_bad_fft_epochs(data_f, 0.03)
+    def reject_epochs(self, data, labels):
 
-        bad_idx_amp = find_bad_amplitude_epochs(data_f, 40)
+        # bad_idx = find_bad_fft_epochs(data_in, self.max_fft_mse)
+        # data = np.delete(data_in, bad_idx, axis=0)
+        # labels = np.delete(labels_in, bad_idx, axis=0)
 
-        bad_idx.extend(bad_idx_fft)
-        bad_idx.extend(bad_idx_amp)
-
-        data_out = np.delete(data_f, bad_idx, axis=0)
-        labels_out = np.delete(labels_in, bad_idx, axis=0)
+        bad_idx_amp = find_bad_amplitude_epochs(data, self.max_amp)
+        data_out = np.delete(data, bad_idx_amp, axis=0)
+        labels_out = np.delete(labels, bad_idx_amp, axis=0)
 
         return data_out, labels_out
+
+    # def get_fft_avg_model(self, epochs):
+    #         computeAvgFFT(epochs, ch, fs, range(nepochs))
 
     def setValidChannels(self, channels):
         self.channels = channels
