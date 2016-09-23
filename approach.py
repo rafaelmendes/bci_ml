@@ -28,19 +28,17 @@ class Approach:
         self.learner.DesignCSP(csp_nei)
         self.learner.AssembleLearner()
 
-        self.balance_epochs = False
-
-    def define_bad_epochs(self, max_amp, max_fft_mse):
+    def define_bad_epochs(self, max_amp):
         self.max_amp = max_amp
-        self.max_fft_mse = max_fft_mse
 
     def trainModel(self):
 
         data, ev = self.loadData(self.data_cal_path, self.events_cal_path)
         epochs, labels = self.loadEpochs(data, ev)
-
         epochs = self.preProcess(epochs)
-        epochs, labels = self.reject_epochs(epochs, labels)
+
+
+        # epochs, labels = self.reject_epochs(epochs, labels)
 
         self.learner.Learn(epochs, labels)
         self.learner.EvaluateSet(epochs, labels)
@@ -116,18 +114,7 @@ class Approach:
                                                 self.smax, 
                                                 self.class_ids)
 
-        idx_1 = np.where(labels == self.class_ids[0])[0]
-        idx_2 = np.where(labels == self.class_ids[1])[0]
-
-        if self.balance_epochs:
-            nepochs = min([len(idx_1), len(idx_2)])
-            idx_1 = idx_1[:nepochs]
-            idx_2 = idx_2[:nepochs]
-            idx = np.concatenate([idx_1,idx_2])
-
-            return epochs[idx],labels[idx]
-        else:
-            return epochs, labels
+        return epochs, labels
 
 
     def preProcess(self, data_in):
@@ -154,14 +141,6 @@ class Approach:
 
     def setValidChannels(self, channels):
         self.channels = channels
-
-    def set_balance_epochs(self, balance_epochs):
-        ''' Set balance epochs: the number of epochs loaded from one class will
-        be the same as the number of epochs loaded for the opposite class. The 
-        number of epochs is defined as the minimum from both classes. This avoid
-        model bias when training.
-        '''
-        self.balance_epochs = balance_epochs
         
     def saveToPkl(self, path):
         path += '/approach_info.pkl'

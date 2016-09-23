@@ -248,6 +248,29 @@ def computeAvgFFT(epochs, ch, fs, epoch_idx):
     
     return freq, A
 
+def computeAvgFFTWelch(epochs, ch, fs, epoch_idx):
+    
+    n_samples = epochs.shape[2]
+    
+    N = 512
+    
+    T = 1.0 / fs
+
+    n_epochs = epochs.shape[0]
+    
+    # ft = np.zeros(N)
+    A = np.zeros(N/2 + 1)
+ 
+    for i in epoch_idx:
+        epoch = epochs[i,ch,:]      
+        f, A = sp.welch(epoch, nperseg=50, nfft=N)
+        A += A
+    
+    A = A / n_epochs        
+    # freq = np.linspace(0.0, 1.0/(2.0*T), N/2)
+    
+    return f, A
+
 def computeFFT(epoch, ch, fs):
     
     n_samples = epoch.shape[1]
